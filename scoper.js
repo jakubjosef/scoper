@@ -1,11 +1,5 @@
+/* Scoper.js - updated version - we using div instead of span for wrapper element */
 /* global exports */
-
-function init() {
-  var style = document.createElement("style");
-  style.appendChild(document.createTextNode(""));
-  document.head.appendChild(style);
-  style.sheet.insertRule("body { visibility: hidden; }", 0);
-}
 
 function scoper(css, prefix) {
   var re = new RegExp("([^\r\n,{}]+)(,(?=[^}]*{)|\s*{)", "g");
@@ -37,7 +31,6 @@ function process() {
   var styles = document.body.querySelectorAll("style[scoped]");
 
   if (styles.length === 0) {
-    document.getElementsByTagName("body")[0].style.visibility = "visible";
     return;
   }
 
@@ -53,7 +46,7 @@ function process() {
       var id = "scoper-" + i;
       var prefix = "#" + id;
 
-      var wrapper = document.createElement("span");
+      var wrapper = document.createElement("div");
       wrapper.id = id;
 
       var parent = style.parentNode;
@@ -74,7 +67,6 @@ function process() {
   }
 
   head.appendChild(newstyle);
-  document.getElementsByTagName("body")[0].style.visibility = "visible";
 }
 
 (function() {
@@ -83,9 +75,7 @@ function process() {
   if (typeof document === "undefined" || ("scoped" in document.createElement("style"))) {
     return;
   }
-  
-  init();
-
+ 
   if (document.readyState === "complete" || document.readyState === "loaded") {
     process();
   } else {
